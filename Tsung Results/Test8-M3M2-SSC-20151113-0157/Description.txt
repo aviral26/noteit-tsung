@@ -4,6 +4,4 @@ Same two user flows - 30% probability that a user creates a new note
 					  70% probability that a user searches and views a note
 
 Stack configuration - TYPE: M3 Medium
-					  #: 1
-
-
+					  #: 2

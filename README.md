@@ -1,2 +1,2 @@
 # noteit-tsung
-Tsung load test results for &lt;a href = "https://github.com/scalableinternetservices/noteit">NoteIt&lt;/a>
+Tsung load test results for <a href="https://github.com/scalableinternetservices/noteit">NoteIt</a>

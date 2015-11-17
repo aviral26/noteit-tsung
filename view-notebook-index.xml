@@ -52,107 +52,41 @@
   </options>
 
   <sessions>
-    <session name="probable-note-creator-navigation" probability="30" type="ts_http">
-
+    <session name="view-notebook-index-unit-test" type="ts_http" probability="100">
       <request>
         <http url="/" version="1.1" method="GET"/>
       </request>
-
-      <thinktime value="2" random="true"/>
 
       <setdynvars sourcetype="random_number" start="1" end="500">
         <var name="username"/>
       </setdynvars>
 
       <request>
-        
         <http url="/users/sign_in" version="1.1" method="GET"/>
       </request>
-
-      <thinktime value="2" random="true"/>
 
       <request subst="true">
         <http url="/users/sign_in" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;user%5Bemail%5D=niu%40gmail.com&amp;user%5Bpassword%5D=12345678&amp;user%5Bremember_me%5D=0&amp;commit=Log+in">
         </http>
       </request>
 
-      <thinktime value="2" random="true"/>
-
-      <request>
-        <http url="/notes/new" version="1.1" method="GET"/>
-      </request>
       <setdynvars sourcetype="random_number" start="1" end="100">
-        <var name="random_title"/>
-        <var name="random_content"/>
+        <var name="random_notebook_number"/>
       </setdynvars>
-
-      <thinktime value="2" random="true"/>
 
       <request>
-        
-        <http url="/notes" version="1.1" method="GET"/>
-      </request>
-
-      <thinktime value="20" random="true"/>      
-
-     <request subst="true">
-                  <http url="/search" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;search=&amp;commit=Search"/>
-      </request>
-
-      <setdynvars sourcetype="random_number" start="1" end="30">
-        <var name="random_note_number"/>
-      </setdynvars>
-      
-      <request subst="true">
-        
-        <http url="/notes/%%_random_note_number%%" version="1.1" method="GET"/>
-      </request>
-      
-     <request subst="true">
-                  <http url="/comments" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;note_id=%%_random_note_number%%&amp;comment%5Bcontent%5D=hello&amp;commit=Post+comment"/>
-       
+        <http url="/notebooks/%%random_notebook_number%%" version="1.1" method="GET"/>
       </request>
 
       <request>
         <http url="/static_pages/home" version="1.1" method="GET"/>
       </request>
 
-    <request>
-               <http url="/users/sign_out" version="1.1" method="POST" contents="_method=delete&amp;"/>
+      <request>
+        <http url="/users/sign_out" version="1.1" method="POST" contents="_method=delete&amp;"/>
       </request> 
 
-
     </session>
-   
-    <session name="probable-user-navigation" probability="70" type="ts_http">
-
-      <request>
-        <http url="/" version="1.1" method="GET"/>
-      </request>
-
-      <thinktime value="2" random="true"/>
-
-      <setdynvars sourcetype="random_number" start="1" end="30">
-        <var name="username"/>
-      </setdynvars>
-
-             
-      <request subst="true">
-  <http url="/search" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;search=&amp;commit=Search"/>
-      </request>
-      <thinktime value="2" random="true"/>
-
-      <setdynvars sourcetype="random_number" start="1" end="30">
-        <var name="random_note_number"/>
-      </setdynvars>
-      
-      <request subst="true">
-    <http url="/notes/%%_random_note_number%%" version="1.1" method="GET"/>
-      </request>
-
-    
-    </session>
-
 
   </sessions>
 </tsung>

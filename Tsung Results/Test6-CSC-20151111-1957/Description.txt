@@ -1,0 +1,4 @@
+Added client side caching on top of TEST5 code.
+
+Same two user flows - 30% probability that a user creates a new note
+					  70% probability that a user searches and views a note

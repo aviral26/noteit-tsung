@@ -53,7 +53,7 @@
 
   <sessions>
     
-    <session name="comment-a-note-unit-test" probability="30" type="ts_http">
+    <session name="comment-a-note-unit-test" probability="100" type="ts_http">
 
       <request>
         <http url="/" version="1.1" method="GET"/>

@@ -1,0 +1,93 @@
+<?xml version="1.0"?><tsung loglevel="notice" version="1.0">
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers="15000"/>
+  </clients>
+
+  <servers>
+    <server host="52.91.67.125" port="80" type="tcp"/>
+  </servers>
+
+
+  <load>
+    <arrivalphase phase="1" duration="30" unit="second">
+      <users arrivalrate="1" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="2" duration="30" unit="second">
+      <users arrivalrate="2" unit="second"/>
+    </arrivalphase>
+    <arrivalphase phase="3" duration="30" unit="second">
+      <users arrivalrate="4" unit="second"/>
+    </arrivalphase>
+   <arrivalphase phase="4" duration="30" unit="second">
+     <users arrivalrate="8" unit="second"/>
+   </arrivalphase>
+   <arrivalphase phase="5" duration="30" unit="second">
+     <users arrivalrate="16" unit="second"/>
+   </arrivalphase>
+   <arrivalphase phase="6" duration="35" unit="second">
+     <users arrivalrate="20" unit="second"/>
+   </arrivalphase>
+   <arrivalphase phase="7" duration="35" unit="second">
+     <users arrivalrate="40" unit="second"/>
+   </arrivalphase>
+   <arrivalphase phase="8" duration="35" unit="second">
+     <users arrivalrate="80" unit="second"/>
+   </arrivalphase>
+   <arrivalphase phase="9" duration="35" unit="second">
+     <users arrivalrate="100" unit="second"/>
+   </arrivalphase>
+   <arrivalphase phase="10" duration="35" unit="second">
+     <users arrivalrate="120" unit="second"/>
+   </arrivalphase>
+  </load>
+
+  <options>
+    <option name="global_ack_timeout" value="2000"/>
+
+    <option type="ts_http" name="user_agent">
+      <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
+    </option>
+  </options>
+
+  <sessions>
+    
+    <session name="comment-a-note-unit-test" probability="100" type="ts_http">
+
+      <request>
+        <http url="/" version="1.1" method="GET"/>
+      </request>
+
+      <setdynvars sourcetype="random_number" start="1" end="500">
+        <var name="username"/>
+      </setdynvars>
+
+      <request>
+        <http url="/users/sign_in" version="1.1" method="GET"/>
+      </request>
+
+      <request subst="true">
+        <http url="/users/sign_in" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;user%5Bemail%5D=yuexin%40umail.ucsb.edu&amp;user%5Bpassword%5D=77777777&amp;user%5Bremember_me%5D=0&amp;commit=Log+in">
+        </http>
+      </request>
+
+
+      <request subst="true">
+        <http url="/search" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;search=&amp;commit=Search"/>        
+      </request>
+
+      <setdynvars sourcetype="random_number" start="1" end="30">
+        <var name="random_note_number"/>
+      </setdynvars>
+      
+      <request subst="true">
+        <http url="/notes/%%_random_note_number%%" version="1.1" method="GET"/>
+      </request>
+
+
+      <request subst="true">
+        <http url="/comments" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;note_id=%%_random_note_number%%&amp;comment%5Bcontent%5D=hello&amp;commit=Post+comment"/>
+      </request>
+
+    </session> 
+  </sessions>
+</tsung>

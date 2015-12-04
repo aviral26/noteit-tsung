@@ -1,0 +1,40 @@
+[19/Nov/2015:00:17:46 -0000] access to /favicon.ico failed for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"httpd_file: Can't access /home/ec2-user/.tsung/log/20151119-0017/favicon.ico: File not found"
+[19/Nov/2015:00:17:47 -0000] access to /assets/ico/favicon.ico failed for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"httpd_file: Can't access /home/ec2-user/.tsung/log/20151119-0017/assets/ico/favicon.ico: File not found"
+[19/Nov/2015:00:23:54 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:30:07 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:30:07 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:30:07 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:30:07 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:30:07 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:30:32 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:34:19 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:34:19 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:34:19 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:34:19 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+
+[19/Nov/2015:00:34:19 -0000] server crash for 0:0:0:0:0:FFFF:A9E7:7284, reason: 
+"Error reading request: No request received on keep-alive connection before server side timeout"
+

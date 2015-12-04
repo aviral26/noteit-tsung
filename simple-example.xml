@@ -2,11 +2,11 @@
 <!DOCTYPE tsung SYSTEM "/home/ec2-user/opt/tsung-1.5.0/share/tsung/tsung-1.0.dtd">
 <tsung loglevel="notice" version="1.0">
   <clients>
-    <client host="localhost" use_controller_vm="true" maxusers="15000"/>
+    <client host="localhost" use_controller_vm="true" maxusers="150000"/>
   </clients>
 
   <servers>
-    <server host="" port="80" type="tcp"/>
+    <server host="52.23.200.241" port="80" type="tcp"/>
   </servers>
 
 
@@ -33,13 +33,32 @@
      <users arrivalrate="40" unit="second"/>
    </arrivalphase>
    <arrivalphase phase="8" duration="35" unit="second">
-     <users arrivalrate="80" unit="second"/>
+     <users arrivalrate="50" unit="second"/>
    </arrivalphase>
    <arrivalphase phase="9" duration="35" unit="second">
-     <users arrivalrate="100" unit="second"/>
+     <users arrivalrate="60" unit="second"/>
    </arrivalphase>
    <arrivalphase phase="10" duration="35" unit="second">
-     <users arrivalrate="120" unit="second"/>
+     <users arrivalrate="70" unit="second"/>
+   </arrivalphase>
+   <arrivalphase phase="11" duration="35" unit="second">
+     <users arrivalrate="80" unit="second"/>
+   </arrivalphase>
+    <arrivalphase phase="12" duration="35" unit="second">
+     <users arrivalrate="90" unit="second"/>
+   </arrivalphase>
+
+   <arrivalphase phase="13" duration="35" unit="second">
+     <users arrivalrate="100" unit="second"/>
+   </arrivalphase>
+   <arrivalphase phase="14" duration="35" unit="second">
+     <users arrivalrate="150" unit="second"/>
+   </arrivalphase>
+   <arrivalphase phase="15" duration="35" unit="second">
+     <users arrivalrate="200" unit="second"/>
+   </arrivalphase>
+   <arrivalphase phase="16" duration="35" unit="second">
+     <users arrivalrate="400" unit="second"/>
    </arrivalphase>
   </load>
 
@@ -52,7 +71,9 @@
   </options>
 
   <sessions>
-    <session name="probable-note-creator-navigation" probability="30" type="ts_http">
+
+    <!-- note creator path-->
+    <session name="probable-note-creator-navigation" weight="1" type="ts_http">
 
       <request>
         <http url="/" version="1.1" method="GET"/>
@@ -60,7 +81,7 @@
 
       <thinktime value="2" random="true"/>
 
-      <setdynvars sourcetype="random_number" start="1" end="500">
+      <setdynvars sourcetype="random_number" start="1" end="10000">
         <var name="username"/>
       </setdynvars>
 
@@ -71,8 +92,9 @@
 
       <thinktime value="2" random="true"/>
 
+      <!-- sign in as random user-->
       <request subst="true">
-        <http url="/users/sign_in" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;user%5Bemail%5D=niu%40gmail.com&amp;user%5Bpassword%5D=12345678&amp;user%5Bremember_me%5D=0&amp;commit=Log+in">
+        <http url="/users/sign_in" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;user%5Bemail%5D=example-%%_username%%%40cs290b.org&amp;user%5Bpassword%5D=12345678&amp;user%5Bremember_me%5D=0&amp;commit=Log+in">
         </http>
       </request>
 
@@ -81,50 +103,165 @@
       <request>
         <http url="/notes/new" version="1.1" method="GET"/>
       </request>
-      <setdynvars sourcetype="random_number" start="1" end="100">
-        <var name="random_title"/>
-        <var name="random_content"/>
-      </setdynvars>
+      
 
       <thinktime value="2" random="true"/>
-
+      <!-- create random note -->
+     <request>
+        <http url="/notes" version="1.1" method="POST" content_type='application/json;charset=UTF-8' contents="{&quot;title&quot;:&quot;randomly_created&quot;,&quot;content&quot;:&quot;randomly_generated&quot;,&quot;university&quot;:&quot;ucsb&quot;,&quot;professor&quot;:&quot;snape&quot;,&quot;class_subject&quot;:&quot;potions&quot;}">
+        </http>
+      </request>
+      <!-- view all notes-->
       <request>
-        
         <http url="/notes" version="1.1" method="GET"/>
       </request>
 
-      <thinktime value="20" random="true"/>      
+      <thinktime value="2" random="true"/>      
+    </session>
 
-     <request subst="true">
-                  <http url="/search" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;search=&amp;commit=Search"/>
+    <!-- note searcher navigation-->
+    <session name="probable-note-searcher-navigation" weight="5" type="ts_http">
+     
+      <setdynvars sourcetype="random_number" start="1" end="10000">
+        <var name="username"/>
+      </setdynvars>
+
+      <request>
+        
+        <http url="/users/sign_in" version="1.1" method="GET"/>
       </request>
 
-      <setdynvars sourcetype="random_number" start="1" end="30">
+      <thinktime value="2" random="true"/>
+
+      <!-- sign in as random user-->
+      <request subst="true">
+        <http url="/users/sign_in" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;user%5Bemail%5D=example-%%_username%%%40cs290b.org&amp;user%5Bpassword%5D=12345678&amp;user%5Bremember_me%5D=0&amp;commit=Log+in">
+        </http>
+      </request>
+
+      <thinktime value="2" random="true"/>
+
+      <setdynvars sourcetype="random_number" start="1" end="8">
+        <var name="random_page_number"/>
+      </setdynvars>
+     
+     <!-- search for a note -->
+     <request subst="true">
+          <http url="/search?page=%%_random_page_number%%" version="1.1" method="GET"/>
+      </request>
+
+      <setdynvars sourcetype="random_number" start="1" end="10000">
         <var name="random_note_number"/>
       </setdynvars>
-      
+
+      <!-- view a searched for note -->
       <request subst="true">
         
         <http url="/notes/%%_random_note_number%%" version="1.1" method="GET"/>
       </request>
       
-     <request subst="true">
-                  <http url="/comments" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;note_id=%%_random_note_number%%&amp;comment%5Bcontent%5D=hello&amp;commit=Post+comment"/>
+      <!-- comment on it -->
+      <request subst="true">
+        <http url="/comments" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;note_id=%%_random_note_number%%&amp;comment%5Bcontent%5D=hello%%_random_note_number%%&amp;commit=Post+comment"/>
        
       </request>
-
+      
       <request>
-        <http url="/static_pages/home" version="1.1" method="GET"/>
-      </request>
-
-    <request>
-               <http url="/users/sign_out" version="1.1" method="POST" contents="_method=delete&amp;"/>
+          <http url="/users/sign_out" version="1.1" method="POST" contents="_method=delete&amp;"/>
       </request> 
-
 
     </session>
    
-    <session name="probable-user-navigation" probability="70" type="ts_http">
+    <!-- file uploader session -->
+    <session name="probable-file-uploader-session-1" weight="1" type="ts_http">
+      <setdynvars sourcetype="random_number" start="1" end="10000">
+        <var name="username"/>
+      </setdynvars>
+
+      <request>
+          <http url="/users/sign_in" version="1.1" method="GET"/>
+      </request>
+
+      <thinktime value="2" random="true"/>
+
+      <request subst="true">
+        <http url="/users/sign_in" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;user%5Bemail%5D=example-%%_username%%%40cs290b.org&amp;user%5Bpassword%5D=12345678&amp;user%5Bremember_me%5D=0&amp;commit=Log+in">
+        </http>
+      </request>
+
+
+      <!-- set dynamic variable -->
+       <setdynvars sourcetype="eval"
+            code='fun({Pid,DynVars})-> [[13, 10]] end.'>
+        <var name="nl" />
+      </setdynvars>
+      <setdynvars sourcetype="eval"
+            code='fun({Pid,DynVars})->
+                    {ok, Bin} = file:read_file("notebook.png"),
+                    Bin
+                  end.'>
+        <var name="attached_file" />
+      </setdynvars>
+
+      <request subst="true">
+        <http
+          url='/upload-note'
+          version='1.1'
+          method='POST'
+          content_type='multipart/form-data; boundary=----FormBoundary'
+          contents='------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[title]"%%_nl%%%%_nl%%random%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[content]"%%_nl%%%%_nl%%hello%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[university]"%%_nl%%%%_nl%%ucsb%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[professor]"%%_nl%%%%_nl%%snape%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[class_subject]"%%_nl%%%%_nl%%potions%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[avatar]"; filename="notebook.png"%%_nl%%Content-Type: image/png%%_nl%%%%_nl%%%%_attached_file%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="commit"%%_nl%%%%_nl%%Upload%%_nl%%------FormBoundary--%%_nl%%%%_nl%%
+'>
+      </http>
+      </request>
+
+    </session>
+
+    <!-- file uploader session 2-->
+    <session name="probable-file-uploader-session-2" weight="1" type="ts_http">
+      <setdynvars sourcetype="random_number" start="1" end="10000">
+        <var name="username"/>
+      </setdynvars>
+
+      <request>
+          <http url="/users/sign_in" version="1.1" method="GET"/>
+      </request>
+
+      <thinktime value="2" random="true"/>
+
+      <request subst="true">
+        <http url="/users/sign_in" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;user%5Bemail%5D=example-%%_username%%%40cs290b.org&amp;user%5Bpassword%5D=12345678&amp;user%5Bremember_me%5D=0&amp;commit=Log+in">
+        </http>
+      </request>
+
+
+      <!-- set dynamic variable -->
+       <setdynvars sourcetype="eval"
+            code='fun({Pid,DynVars})-> [[13, 10]] end.'>
+        <var name="nl" />
+      </setdynvars>
+      <setdynvars sourcetype="eval"
+            code='fun({Pid,DynVars})->
+                    {ok, Bin} = file:read_file("sample.pdf"),
+                    Bin
+                  end.'>
+        <var name="attached_file" />
+      </setdynvars>
+
+      <request subst="true">
+        <http
+          url='/upload-note'
+          version='1.1'
+          method='POST'
+          content_type='multipart/form-data; boundary=----FormBoundary'
+          contents='------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[title]"%%_nl%%%%_nl%%random%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[content]"%%_nl%%%%_nl%%hello%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[university]"%%_nl%%%%_nl%%ucsb%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[professor]"%%_nl%%%%_nl%%snape%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[class_subject]"%%_nl%%%%_nl%%potions%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="note[avatar]"; filename="sample.pdf"%%_nl%%Content-Type: application/pdf%%_nl%%%%_nl%%%%_attached_file%%%%_nl%%------FormBoundary%%_nl%%Content-Disposition: form-data; name="commit"%%_nl%%%%_nl%%Upload%%_nl%%------FormBoundary--%%_nl%%%%_nl%%
+'>
+      </http>
+      </request>
+
+    </session>
+
+    <!--voting and following users -->
+    <session name="probable-user-navigation-1" weight="2" type="ts_http">
 
       <request>
         <http url="/" version="1.1" method="GET"/>
@@ -132,27 +269,130 @@
 
       <thinktime value="2" random="true"/>
 
-      <setdynvars sourcetype="random_number" start="1" end="30">
+       <setdynvars sourcetype="random_number" start="1" end="10000">
         <var name="username"/>
       </setdynvars>
 
-             
-      <request subst="true">
-  <http url="/search" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;search=&amp;commit=Search"/>
+      <request>
+          <http url="/users/sign_in" version="1.1" method="GET"/>
       </request>
+
       <thinktime value="2" random="true"/>
 
-      <setdynvars sourcetype="random_number" start="1" end="30">
-        <var name="random_note_number"/>
+      <!-- log in as a random user -->
+      <request subst="true">
+        <http url="/users/sign_in" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;user%5Bemail%5D=example-%%_username%%%40cs290b.org&amp;user%5Bpassword%5D=12345678&amp;user%5Bremember_me%5D=0&amp;commit=Log+in">
+        </http>
+      </request>
+
+      <!-- click find users-->
+     <request subst="true">
+          <http url="/users" version="1.1" method="GET"/>
+      </request>
+
+      <setdynvars sourcetype="random_number" start="1" end="10000">
+        <var name="random_user_number"/>
       </setdynvars>
       
-      <request subst="true">
-    <http url="/notes/%%_random_note_number%%" version="1.1" method="GET"/>
+      <!-- view a random user -->
+
+      <request subst="true">  
+        <http url="/users/%%_random_user_number%%" version="1.1" method="GET"/>
       </request>
+
+      <thinktime value="1" random="true"/>      
+
+      <!-- Follow user -->
+      <request subst="true">
+        <http url="/relationships" version="1.1" method="POST" content_type='application/x-www-form-urlencoded; charset=UTF-8' contents="utf8=%E2%9C%93&amp;followed_id=%%_random_user_number%%&amp;commit=Follow">
+        </http>
+      </request>
+
+      <!-- upvote a note by that user -->
+      <setdynvars sourcetype="random_number" start="1" end="10000">
+        <var name="random_note_number"/>
+      </setdynvars>
+
+      <request subst="true">  
+        <http url="/notes/%%_random_note_number%%" version="1.1" method="GET"/>
+      </request>
+      
 
     
     </session>
 
+    <!-- user sign up session, surf randomly and create a notebook -->
+    <session name="probable-user-navigation-2" weight="2" type="ts_http">
+      <request>
+        <http url="/" version="1.1" method="GET"/>
+      </request>
+      <thinktime value="2" random="true"/>
+      <request>
+        <http url="/users/sign_up" version="1.1" method="GET"/>
+      </request>
+      <setdynvars sourcetype="random_number" start="110" end="9999999">
+        <var name="random_user_name"/>
+      </setdynvars>
+
+      <thinktime value="3" random="true"/>
+      <request subst="true">
+         <http url="/users" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;user%5Bemail%5D=new_user%%_random_user_name%%%40cs290b.com&amp;user%5Bpassword%5D=11111111&amp;user%5Bpassword_confirmation%5D=11111111"/>
+      </request>
+      <thinktime value="2" random="true"/>
+      <request>
+        <http url="/users" version="1.1" method="GET"/>
+      </request>
+
+      <setdynvars sourcetype="random_number" start="1" end="102">
+        <var name="random_user_n"/>
+      </setdynvars>
+      
+
+      <request subst="true">
+        <http url="/users/%%_random_user_n%%" version="1.1" method="GET"/>
+      </request>
+
+      <thinktime value="2" random="true"/>      
+
+
+      <request subst="true">
+        <http url="/search" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;search=&amp;commit=Search"/>
+      </request>
+      <thinktime value="3" random="true"/>
+      
+      <setdynvars sourcetype="random_number" start="1" end="100">
+        <var name="random_note_number"/>
+      </setdynvars>
+      
+      <request subst="true">
+        <http url="/notes/%%_random_note_number%%" version="1.1" method="GET"/>
+      </request>
+      <thinktime value="1" random="true"/>
+      <request subst="true">
+        <http url="/comments" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;note_id=%%_random_note_number%%&amp;comment%5Bcontent%5D=that%27s+a+good+one%21&amp;commit=Post+comment"/>
+      </request>
+
+      <thinktime value="2" random="true"/>
+      
+      <setdynvars sourcetype="random_number" start="1" end="100">
+        <var name="notebook_random"/>
+      </setdynvars>
+      <request subst="true">
+        <http url="/notebooks" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;notebook%5Btitle%5D=my+first+note+book%21+%%_notebook_random%%&amp;commit=Create"/>
+      </request>
+
+      <thinktime value="2" random="true"/>
+      <request subst="true">        
+        <http url="/notes/new" version="1.1" method="GET"/>
+      </request>
+      
+      <thinktime value="5" random="true"/>
+      <request>
+        <http url="/users/sign_out" version="1.1" method="POST" contents="_method=delete&amp;"/>
+     </request> 
+
+
+    </session>
 
   </sessions>
 </tsung>

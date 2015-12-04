@@ -1,11 +1,11 @@
+<?xml version="1.0"?> <!DOCTYPE tsung SYSTEM "/home/ec2-user/opt/tsung-1.5.0/share/tsung/tsung-1.0.dtd"> <tsung loglevel="notice" version="1.0">
 
-<?xml version="1.0"?> <!DOCTYPE tsung SYSTEM "/home/ec2-user/opt/tsung-1.5.0/share/tsung/tsung-1.0.dtd"> <tsung loglevel="notice" version="1.0">  
-<clients>
+  <clients>
     <client host="localhost" use_controller_vm="true" maxusers="15000"/>
   </clients>
 
   <servers>
-    <server host="52.91.77.41" port="80" type="tcp"/>
+    <server host="52.90.195.255" port="80" type="tcp"/>
   </servers>
 
 
@@ -69,11 +69,27 @@
         <http url="/users/sign_in" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;user%5Bemail%5D=niu%40gmail.com&amp;user%5Bpassword%5D=12345678&amp;user%5Bremember_me%5D=0&amp;commit=Log+in">
         </http>
       </request>
-	<thinktime value="2" random="true"/>
 
-     <request subst="true">
-	<http url="/notes/new" version="1.1" method="GET"/>
+	<setdynvars sourcetype="random_number" start="1" end="30">
+        <var name="random_note_number"/>
+      </setdynvars>
+      
+      <request subst="true">
+        <http url="/notes/%%_random_note_number%%" version="1.1" method="GET"/>
       </request>
+
+
+      <request subst="true">
+        <http url="/notes/%%_random_note_number%%/edit" version="1.1" method="GET"/>
+      </request>
+
+	<setdynvars sourcetype="random_number" start="1" end="100">
+        <var name="random_title"/>
+        <var name="random_content"/>
+      </setdynvars>
+
+      <thinktime value="2" random="true"/>
+   
 
 	
 
@@ -89,5 +105,6 @@
 
   </sessions>
 </tsung>
+
 
 

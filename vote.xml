@@ -87,7 +87,7 @@
 
 
       <request subst="true">
-        <http url="/notes/%%_random_note_number%%" version="1.1" method="POST" contents="utf8=%E2%9C%93&_method=patch&upvote=%23%3CUser%3A0x007fbed037be50%3E&button="/>
+        <http url="/notes/%%_random_note_number%%" version="1.1" method="POST" contents="utf8=%E2%9C%93&amp;_method=&amp;upvote=&amp;button="/>
       </request>
 
     </session> 

@@ -6,7 +6,7 @@
   </clients>
 
   <servers>
-    <server host="noteit-aviral-pass-mas-1693873216.us-east-1.elb.amazonaws.com" port="80" type="tcp"/>
+    <server host="noteit-aviral-passenger-mem-1794665751.us-east-1.elb.amazonaws.com" port="80" type="tcp"/>
   </servers>
 
 
